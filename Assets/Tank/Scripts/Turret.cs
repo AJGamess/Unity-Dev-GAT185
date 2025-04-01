@@ -12,16 +12,18 @@ public class Turret : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnFire());
-        //spawnTimer = Time.time + spawnTime; 
+        spawnTimer = Time.time + spawnTime; 
     }
 
     void Update()
     {
-        //spawnTimer -= Time.deltaTime;
-        //if (Time.time >= spawnTimer) {
-        //    spawnTimer = Time.time + spawnTime;
-        //    Instantiate(rocketPrefab, barrel.position, barrel.rotation);
-        //}
+        spawnTimer -= Time.deltaTime;
+        if (Time.time >= spawnTimer)
+        {
+            spawnTimer = Time.time + spawnTime;
+            GameObject rocket = Instantiate(rocketPrefab, barrel.position, barrel.rotation);
+            Destroy(rocket, 3f); // Destroy the rocket after 3 seconds
+        }
     }
 
     IEnumerator SpawnFire()
@@ -29,7 +31,9 @@ public class Turret : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnTimer);
-            Instantiate(rocketPrefab, barrel.position, barrel.rotation);
+            GameObject rocket = Instantiate(rocketPrefab, barrel.position, barrel.rotation);
+            Destroy(rocket, 3f); // Destroy the rocket after 3 seconds
         }
     }
+
 }

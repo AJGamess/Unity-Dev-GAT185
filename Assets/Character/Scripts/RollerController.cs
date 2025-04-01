@@ -7,6 +7,9 @@ public class RollerController : MonoBehaviour
     [SerializeField] float jumpForce = 5;
     [SerializeField] Transform view;
 
+    [SerializeField] float rayLength = 1;
+    [SerializeField] LayerMask groundLayerMask;
+
     Rigidbody rb;
     Vector2 movementInput = Vector2.zero;
 
@@ -36,6 +39,19 @@ public class RollerController : MonoBehaviour
 
     public void OnJump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        if (OnGround()) 
+        { 
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        }
+    }
+    private bool OnGround()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, rayLength, groundLayerMask);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position, Vector3.down * rayLength);
     }
 }
